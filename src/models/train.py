@@ -1,12 +1,14 @@
 import joblib
+import time
 from pathlib import Path
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report, roc_auc_score
 
 from src.data.load_data import load_train_data, load_test_data
+from src.models.evaluate import evaluate_model
 
 MODEL_DIR = Path("models/artifacts")
 MODEL_DIR.mkdir(parents=True, exist_ok=True)
+
 
 def train_model():
 
@@ -14,6 +16,8 @@ def train_model():
 
     X_train, y_train = load_train_data()
     X_test, y_test = load_test_data()
+
+    start_time = time.time()
 
     print("Training RandomForest model...")
 
@@ -25,24 +29,31 @@ def train_model():
 
     model.fit(X_train, y_train.values.ravel())
 
+    training_time = time.time() - start_time
+
     print("Evaluating model...")
 
-    predictions = model.predict(X_test)
-    probabilities = model.predict_proba(X_test)[:, 1]
+    amounts = X_test["Amount"]
 
-    roc_auc = roc_auc_score(y_test, probabilities)
+    metrics = evaluate_model(model, X_test, y_test.values.ravel(), amounts)
 
-    print("\nModel Evaluation")
-    print(classification_report(y_test, predictions))
-    print("ROC AUC:", roc_auc)
+    metrics["training_time_seconds"] = training_time
+    metrics["train_samples"] = len(X_train)
+    metrics["test_samples"] = len(X_test)
+    metrics["fraud_ratio"] = y_train.mean().item()
+
+    print("\nModel Metrics")
+
+    for key, value in metrics.items():
+        print(f"{key}: {value}")
 
     model_path = MODEL_DIR / "fraud_model.pkl"
 
-    print("Saving model to", model_path)
+    print("\nSaving model to", model_path)
 
     joblib.dump(model, model_path)
 
-    return model
+    return model, metrics
 
 
 if __name__ == "__main__":
