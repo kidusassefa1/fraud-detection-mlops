@@ -3,7 +3,7 @@ import time
 from pathlib import Path
 from sklearn.ensemble import RandomForestClassifier
 
-from src.data.load_data import load_train_data, load_test_data
+from data.load_data import load_train_data, load_test_data
 from src.models.evaluate import evaluate_model
 
 MODEL_DIR = Path("models/artifacts")
