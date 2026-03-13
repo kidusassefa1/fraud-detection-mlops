@@ -17,14 +17,21 @@ def train_model():
     X_train, y_train = load_train_data()
     X_test, y_test = load_test_data()
 
+    param = {
+        "model_name": "RandomForestClassifier",
+        "n_estimators": 100,
+        "random_state": 42,
+        "n_jobs": -1
+    }
+
     start_time = time.time()
 
     print("Training RandomForest model...")
 
     model = RandomForestClassifier(
-        n_estimators=100,
-        random_state=42,
-        n_jobs=-1
+        n_estimators=param["n_estimators"],
+        random_state=param["random_state"],
+        n_jobs=param["n_jobs"]
     )
 
     model.fit(X_train, y_train.values.ravel())
