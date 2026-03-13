@@ -55,7 +55,6 @@ def train_model():
         metrics["test_samples"] = len(X_test)
         metrics["fraud_ratio"] = float(y_train.mean())
 
-        mlflow.log_params(params)
         print("\nModel Parameters")
         for key, value in params.items():
             print(f"{key}: {value}")
@@ -64,16 +63,13 @@ def train_model():
         for key, value in metrics.items():
             print(f"{key}: {value}")
 
-        mlflow.log_metrics(metrics)
         model_path = MODEL_DIR / "fraud_model.pkl"
         print(f"\nSaving model to {model_path}")
-        
-        mlflow.sklearn.log_model(
-            model,
-            artifact_path="model",
-        )
-
         joblib.dump(model, model_path)
+        
+        print("\nLogging parameters, metrics, and model artifact to MLflow...")
+        mlflow.log_metrics(metrics)
+        mlflow.log_params(params)
         mlflow.log_artifact(str(model_path))
 
     return model, metrics, params
