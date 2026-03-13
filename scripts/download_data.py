@@ -4,10 +4,10 @@ from pathlib import Path
 
 DATA_URL = "https://storage.googleapis.com/download.tensorflow.org/data/creditcard.csv"
 
-DATA_URL = Path("data/raw")
-DATA_URL.mkdir(parents=True, exist_ok=True) 
+DATA_DIR = Path("data/raw")
+DATA_DIR.mkdir(parents=True, exist_ok=True) 
 
-OUTPUT_FILE = DATA_URL / "creditcard.csv"
+OUTPUT_FILE = DATA_DIR / "creditcard.csv"
 
 def download_data():
     if OUTPUT_FILE.exists():
