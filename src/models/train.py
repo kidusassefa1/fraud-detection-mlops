@@ -45,36 +45,36 @@ def train_model():
 
         training_time = time.time() - start_time
 
-    print("Evaluating model...")
+        print("Evaluating model...")
 
-    amounts = X_test["Amount"]
-    metrics = evaluate_model(model, X_test, y_test.values.ravel(), amounts)
+        amounts = X_test["Amount"]
+        metrics = evaluate_model(model, X_test, y_test.values.ravel(), amounts)
 
-    metrics["training_time_seconds"] = training_time
-    metrics["train_samples"] = len(X_train)
-    metrics["test_samples"] = len(X_test)
-    metrics["fraud_ratio"] = float(y_train.mean())
+        metrics["training_time_seconds"] = training_time
+        metrics["train_samples"] = len(X_train)
+        metrics["test_samples"] = len(X_test)
+        metrics["fraud_ratio"] = float(y_train.mean())
 
-    mlflow.log_params(params)
-    print("\nModel Parameters")
-    for key, value in params.items():
-        print(f"{key}: {value}")
+        mlflow.log_params(params)
+        print("\nModel Parameters")
+        for key, value in params.items():
+            print(f"{key}: {value}")
 
-    print("\nModel Metrics")
-    for key, value in metrics.items():
-        print(f"{key}: {value}")
+        print("\nModel Metrics")
+        for key, value in metrics.items():
+            print(f"{key}: {value}")
 
-    mlflow.log_metrics(metrics)
-    model_path = MODEL_DIR / "fraud_model.pkl"
-    print(f"\nSaving model to {model_path}")
-    
-    mlflow.sklearn.log_model(
-        model,
-        artifact_path="model",
-    )
+        mlflow.log_metrics(metrics)
+        model_path = MODEL_DIR / "fraud_model.pkl"
+        print(f"\nSaving model to {model_path}")
+        
+        mlflow.sklearn.log_model(
+            model,
+            artifact_path="model",
+        )
 
-    joblib.dump(model, model_path)
-    mlflow.log_artifact(str(model_path))
+        joblib.dump(model, model_path)
+        mlflow.log_artifact(str(model_path))
 
     return model, metrics, params
 
