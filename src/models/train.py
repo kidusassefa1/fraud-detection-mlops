@@ -53,7 +53,7 @@ def train_model():
         metrics["training_time_seconds"] = training_time
         metrics["train_samples"] = len(X_train)
         metrics["test_samples"] = len(X_test)
-        metrics["fraud_ratio"] = float(y_train.mean())
+        metrics["fraud_ratio"] = float(y_train.iloc[:, 0].mean())
 
         print("\nModel Parameters")
         for key, value in params.items():
