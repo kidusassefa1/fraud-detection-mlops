@@ -6,6 +6,7 @@ from api.app.schemas import TransactionFeatures, PredictionResponse
 from api.app.predictor import predict_transaction
 from api.app.model_loader import load_model
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     app.state.model = load_model()
@@ -25,6 +26,7 @@ def health_check(request: Request):
         "status": "ok",
         "model_loaded": request.app.state.model is not None,
     }
+
 
 @app.post("/predict", response_model=PredictionResponse)
 def predict(features: TransactionFeatures, request: Request):
