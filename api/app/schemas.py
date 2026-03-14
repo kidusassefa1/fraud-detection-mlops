@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 
 class TransactionFeatures(BaseModel):
-    TimeL: float
+    Time: float
     V1: float
     V2: float
     V3: float
