@@ -60,6 +60,7 @@ def predict(features: TransactionFeatures, request: Request):
             FRAUD_PREDICTION_COUNTER.inc()
 
         return result
+    
     except Exception:
         API_ERRORS_TOTAL.inc()
         raise HTTPException(status_code=500, detail="Error during prediction")
