@@ -15,7 +15,7 @@ def predict_transaction(model, input_data):
     input_df = pd.DataFrame([input_data])
     
     # Make prediction
-    prediction = model.predict(input_df)
+    prediction = model.predict(input_df)[0]
     # Probability of being fraud
     probability = model.predict_proba(input_df)[0][1]
 
