@@ -21,3 +21,6 @@ notebook
 
 # For AWS S3 integration
 boto3
+
+# For monitoring with Prometheus
+prometheus-client
